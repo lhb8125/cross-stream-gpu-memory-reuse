@@ -25,7 +25,8 @@ unsafe control:
 ├── figures/
 │   └── microbenchmark_tradeoff.svg   # Rebuilt from the published CSV
 └── scripts/
-    ├── linear_inflight_memory.py     # CUDA microbenchmark and snapshot export
+    ├── experiments/
+    │   └── linear_inflight_memory.py # CUDA microbenchmark and snapshot export
     ├── plot_microbenchmark.py        # Dependency-free SVG renderer
     └── summarize_results.py          # JSONL-to-CSV aggregation
 ```
