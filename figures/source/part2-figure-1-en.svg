@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 950" role="img" aria-labelledby="title desc">
   <title id="title">Baseline, premature hand-back, and schedule-aware hand-back</title>
-  <desc id="desc">Three panels compare baseline, premature hand-back, and schedule-aware hand-back. Blue and purple arrows are original forward and backward data dependencies. Orange arrows are hand-backs enqueued too early on the critical path; green arrows place the same hand-backs after overlap-capable work.</desc>
+  <desc id="desc">Three panels compare baseline, premature hand-back, and schedule-aware hand-back. The baseline panel shows original forward and backward dependencies in blue and purple. The later panels omit those repeated edges so the orange premature hand-backs and green schedule-aware hand-backs remain prominent.</desc>
   <defs>
     <marker id="fdep" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#52d8ff"/></marker>
     <marker id="bdep" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#b38aff"/></marker>
@@ -57,13 +57,7 @@
     <rect x="630" y="457" width="90" height="38" rx="8" fill="#352d56" stroke="#b38aff"/><text x="675" y="482" fill="#edf7ff" font-size="11" font-weight="750" text-anchor="middle">F MLP</text>
     <rect x="720" y="457" width="180" height="38" rx="8" fill="url(#wait-risk)" stroke="#ff9366"/><text x="810" y="482" fill="#ffb99f" font-size="12" font-weight="800" text-anchor="middle">wait F combine</text>
     <rect x="900" y="457" width="180" height="38" rx="8" fill="#352d56" stroke="#b38aff"/><text x="990" y="482" fill="#edf7ff" font-size="12" font-weight="750" text-anchor="middle">B attention</text>
-    <path d="M322 419V457" fill="none" stroke="#b38aff" stroke-width="2.4" marker-end="url(#bdep)"/>
     <path d="M488 457V419" fill="none" stroke="#ff9366" stroke-width="3" marker-end="url(#risk)"/>
-    <path d="M495 476H608V400H630" fill="none" stroke="#b38aff" stroke-width="2.4" marker-end="url(#bdep)"/>
-    <path d="M765 400V368H1098V476H1080" fill="none" stroke="#b38aff" stroke-width="2.4" marker-end="url(#bdep)"/>
-    <path d="M315 476V510H495V419" fill="none" stroke="#52d8ff" stroke-width="2.4" marker-end="url(#fdep)"/>
-    <path d="M630 400V457" fill="none" stroke="#52d8ff" stroke-width="2.4" marker-end="url(#fdep)"/>
-    <path d="M720 476H742V400H765" fill="none" stroke="#52d8ff" stroke-width="2.4" marker-end="url(#fdep)"/>
     <path d="M900 400V457" fill="none" stroke="#ff9366" stroke-width="3" marker-end="url(#risk)"/>
     <rect x="202" y="522" width="390" height="29" rx="14.5" fill="#39231f" stroke="#ff9366" opacity=".98"/>
     <text x="397" y="542" fill="#ffb99f" font-size="12" font-weight="800" text-anchor="middle">New wait: B MLP → F dispatch</text>
@@ -88,12 +82,7 @@
     <rect x="495" y="719" width="90" height="38" rx="8" fill="#352d56" stroke="#b38aff"/><text x="540" y="744" fill="#edf7ff" font-size="11" font-weight="750" text-anchor="middle">F MLP</text>
     <rect x="630" y="719" width="180" height="38" rx="8" fill="#352d56" stroke="#b38aff"/><text x="720" y="744" fill="#edf7ff" font-size="12" font-weight="750" text-anchor="middle">B attention</text>
     <rect x="822" y="719" width="14" height="38" rx="5" fill="url(#wait-ok)" stroke="#62dcb0" stroke-width="2"/>
-    <path d="M308 719V685" fill="none" stroke="#52d8ff" stroke-width="2.4" marker-end="url(#fdep)"/>
-    <path d="M450 666H469V738H495" fill="none" stroke="#52d8ff" stroke-width="2.4" marker-end="url(#fdep)"/>
-    <path d="M585 738H607V666H630" fill="none" stroke="#52d8ff" stroke-width="2.4" marker-end="url(#fdep)"/>
-    <path d="M322 685V719" fill="none" stroke="#b38aff" stroke-width="2.4" marker-end="url(#bdep)"/>
     <path d="M488 719V700H469V685" fill="none" stroke="#62dcb0" stroke-width="3" marker-end="url(#ok)"/>
-    <path d="M630 666V719" fill="none" stroke="#b38aff" stroke-width="2.4" marker-end="url(#bdep)"/>
     <path d="M765 666V700H829V719" fill="none" stroke="#62dcb0" stroke-width="3" marker-end="url(#ok)"/>
     <path d="M469 685V780H410" fill="none" stroke="#62dcb0" stroke-width="1.8"/>
     <rect x="235" y="780" width="350" height="30" rx="15" fill="#102f2b" stroke="#62dcb0"/>

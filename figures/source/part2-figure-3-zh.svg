@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">共享的 dispatch-output pool 与 forward-only expert-output pool</title>
+  <desc id="desc">Forward dispatch 和 backward dispatch 调用同一底层 dispatch 接口并共享一个 output pool；forward FC2 output 使用另一套 pool，backward MLP 的梯度输出当前不从该 pool 取得。回程箭头水平指向下一次写入者，使生命周期方向明确。</desc>
+  <defs>
+    <marker id="c" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#52d8ff"/></marker>
+    <marker id="p" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#b38aff"/></marker>
+  </defs>
+  <rect width="1200" height="520" rx="28" fill="#081522"/>
+  <g font-family="Inter,system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif">
+    <text x="55" y="58" fill="#edf7ff" font-size="25" font-weight="850">两个 pool：dispatch 由 F/B 共用，expert output 当前仅用于 forward</text>
+    <text x="55" y="90" fill="#9fb4c8" font-size="15">复用距离必须按“谁会取得同一 pool 的下一个 slot”计算，而不是按 layer 数量计算</text>
+
+    <rect x="55" y="125" width="650" height="330" rx="20" fill="#0d2032" stroke="#52d8ff"/>
+    <text x="85" y="165" fill="#52d8ff" font-size="20" font-weight="850">Shared dispatch-output pool</text>
+    <rect x="85" y="205" width="210" height="70" rx="12" fill="#153248" stroke="#52d8ff"/>
+    <text x="190" y="234" fill="#edf7ff" font-size="15" font-weight="800" text-anchor="middle">COMM writer</text>
+    <text x="190" y="258" fill="#9fb4c8" font-size="13" text-anchor="middle">F_dispatch / B_dispatch</text>
+    <rect x="410" y="190" width="245" height="48" rx="11" fill="#2d2848" stroke="#b38aff"/>
+    <text x="532" y="220" fill="#edf7ff" font-size="14" font-weight="800" text-anchor="middle">F_MLP reads F-dispatch slot</text>
+    <rect x="410" y="255" width="245" height="48" rx="11" fill="#2d2848" stroke="#b38aff"/>
+    <text x="532" y="285" fill="#edf7ff" font-size="14" font-weight="800" text-anchor="middle">B_MLP reads B-dispatch slot</text>
+    <path d="M295 228 H410" stroke="#52d8ff" stroke-width="3" marker-end="url(#c)"/>
+    <path d="M295 252 C345 252 355 279 410 279" stroke="#52d8ff" stroke-width="3" fill="none" marker-end="url(#c)"/>
+    <path d="M532 303 C532 335 345 335 345 275 H295" stroke="#b38aff" stroke-width="3" fill="none" marker-end="url(#p)"/>
+    <text x="370" y="365" fill="#d2c0ff" font-size="14" text-anchor="middle">per-slot last-consumer event → next COMM overwrite</text>
+    <rect x="115" y="390" width="530" height="38" rx="10" fill="#173e39" stroke="#4ee3a8"/>
+    <text x="380" y="415" fill="#c5f8df" font-size="14" font-weight="800" text-anchor="middle">同一时刻 B-dispatch 与 F-dispatch 各占一份：共享 pool 需要 K=2</text>
+
+    <rect x="735" y="125" width="410" height="330" rx="20" fill="#0d2032" stroke="#b38aff"/>
+    <text x="765" y="165" fill="#c9adff" font-size="20" font-weight="850">Forward expert-output pool</text>
+    <rect x="770" y="215" width="145" height="62" rx="12" fill="#2d2848" stroke="#b38aff"/>
+    <text x="842" y="241" fill="#edf7ff" font-size="14" font-weight="800" text-anchor="middle">COMPUTE</text>
+    <text x="842" y="263" fill="#bbaed2" font-size="13" text-anchor="middle">F_FC2 writes</text>
+    <rect x="985" y="215" width="125" height="62" rx="12" fill="#153248" stroke="#52d8ff"/>
+    <text x="1047" y="241" fill="#edf7ff" font-size="14" font-weight="800" text-anchor="middle">COMM</text>
+    <text x="1047" y="263" fill="#9fb4c8" font-size="13" text-anchor="middle">F_combine reads</text>
+    <path d="M915 246 H985" stroke="#b38aff" stroke-width="3" marker-end="url(#p)"/>
+    <path d="M1047 277 C1047 330 950 330 950 277 H915" stroke="#52d8ff" stroke-width="3" fill="none" marker-end="url(#c)"/>
+    <text x="940" y="348" fill="#8fe7ff" font-size="13" text-anchor="middle">last consumer → next COMPUTE overwrite</text>
+    <rect x="770" y="382" width="340" height="50" rx="10" fill="#4a3029" stroke="#ff9a6c"/>
+    <text x="940" y="403" fill="#ffd2be" font-size="13" font-weight="800" text-anchor="middle">B_MLP dgrad 当前由 backward 路径产生</text>
+    <text x="940" y="421" fill="#e8bba7" font-size="12" text-anchor="middle">不调用这套 expert-output pool</text>
+  </g>
+</svg>
