@@ -1,0 +1,6 @@
+*.pickle
+*.pkl
+*.jsonl
+__pycache__/
+*.pyc
+.venv/

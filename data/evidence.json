@@ -1,0 +1,211 @@
+{
+  "schema_version": 4,
+  "generated_for": "megatron_cross_stream_memory_management_20260827.zh",
+  "units": {
+    "memory": "MiB",
+    "duration": "ms",
+    "throughput": "TFLOP/s/GPU"
+  },
+  "microbenchmark_one_way_5x": {
+    "hardware": "NVIDIA H100",
+    "pytorch": "2.11.0a0+a6c236b9fd.nv26.03.46836102",
+    "cuda": "13.2",
+    "container": "h100-torch2603",
+    "dtype": "bfloat16",
+    "shape": [32768, 8192],
+    "tensor_mib": 512,
+    "consumer_output_mib": 16,
+    "consumer_backlog": "4 independent 4096x4096 BF16 GEMMs per iteration",
+    "iterations": 52,
+    "repeats": 5,
+    "all_outputs_finite_and_exact": true,
+    "cases": [
+      {
+        "case": "same-stream/no-sync",
+        "allocated_peak_mib": 660.0009765625,
+        "active_peak_mib": 660.0009765625,
+        "reserved_peak_mib": 662,
+        "pending_mib": 0,
+        "pending_blocks": 0,
+        "inactive_mib": 513.99951171875,
+        "device_alloc_delta": 1,
+        "unique_input_addresses": 1,
+        "completed_before_final_sync": 5,
+        "enqueue_median_ms": 5.989345954731107,
+        "enqueue_ms": [6.0006859712302685, 6.021912908181548, 5.989345954731107, 5.957148037850857, 5.955900065600872],
+        "wall_median_ms": 52.57505504414439,
+        "wall_ms": [52.50884406268597, 52.61096195317805, 52.57505504414439, 52.54681711085141, 52.58011817932129],
+        "wall_cv_percent": 0.06548459653006504
+      },
+      {
+        "case": "cross-stream/record-stream/no-sync",
+        "allocated_peak_mib": 660.0009765625,
+        "active_peak_mib": 22676.0009765625,
+        "reserved_peak_mib": 22678,
+        "pending_mib": 22528,
+        "pending_blocks": 44,
+        "inactive_mib": 1.99951171875,
+        "device_alloc_delta": 44,
+        "unique_input_addresses": 44,
+        "completed_before_final_sync": 8,
+        "enqueue_median_ms": 15.752162085846066,
+        "enqueue_ms": [15.780390938743949, 15.68610081449151, 15.752162085846066, 15.671889064833522, 15.848726034164429],
+        "wall_median_ms": 52.3118048440665,
+        "wall_ms": [52.3118048440665, 52.32592881657183, 52.31361906044185, 52.251650020480156, 52.26841499097645],
+        "wall_cv_percent": 0.055218033528498446
+      },
+      {
+        "case": "cross-stream/record-stream/sync",
+        "allocated_peak_mib": 660.0009765625,
+        "active_peak_mib": 660.0009765625,
+        "reserved_peak_mib": 662,
+        "pending_mib": 512,
+        "pending_blocks": 1,
+        "inactive_mib": 1.99951171875,
+        "device_alloc_delta": 1,
+        "unique_input_addresses": 1,
+        "completed_before_final_sync": 52,
+        "enqueue_median_ms": 54.18465007096529,
+        "enqueue_ms": [54.18465007096529, 54.124741116538644, 54.21456811018288, 54.18474203906953, 54.14207908324897],
+        "wall_median_ms": 54.51688007451594,
+        "wall_ms": [54.51688007451594, 54.45474595762789, 54.54808613285422, 54.51778904534876, 54.4689791277051],
+        "wall_cv_percent": 0.06311076213580197
+      },
+      {
+        "case": "cross-stream/hand-back/no-sync",
+        "allocated_peak_mib": 660.0009765625,
+        "active_peak_mib": 660.0009765625,
+        "reserved_peak_mib": 662,
+        "pending_mib": 0,
+        "pending_blocks": 0,
+        "inactive_mib": 513.99951171875,
+        "device_alloc_delta": 1,
+        "unique_input_addresses": 1,
+        "completed_before_final_sync": 5,
+        "enqueue_median_ms": 6.031675962731242,
+        "enqueue_ms": [6.059963023290038, 5.983720999211073, 6.031675962731242, 6.03013695217669, 6.033336045220494],
+        "wall_median_ms": 52.703361958265305,
+        "wall_ms": [52.76767001487315, 52.707860013470054, 52.618196001276374, 52.60899290442467, 52.703361958265305],
+        "wall_cv_percent": 0.11345623662460305
+      },
+      {
+        "case": "cross-stream/ring1/no-sync",
+        "allocated_peak_mib": 660.0009765625,
+        "active_peak_mib": 660.0009765625,
+        "reserved_peak_mib": 662,
+        "pending_mib": 0,
+        "pending_blocks": 0,
+        "inactive_mib": 1.99951171875,
+        "device_alloc_delta": 0,
+        "unique_input_addresses": 1,
+        "completed_before_final_sync": 4,
+        "enqueue_median_ms": 4.737564828246832,
+        "enqueue_ms": [4.763956181704998, 4.728949163109064, 4.750977968797088, 4.737564828246832, 4.718547919765115],
+        "wall_median_ms": 51.926830084994435,
+        "wall_ms": [51.91655596718192, 51.926830084994435, 52.00499016791582, 51.95561284199357, 51.89838306978345],
+        "wall_cv_percent": 0.07163180935043893
+      }
+    ]
+  },
+  "megatron_mbs2_snapshot": {
+    "hardware": "64 x NVIDIA GB200 (16 nodes x 4 GPU)",
+    "model": "DeepSeek-V3 shape proxy, 30 layers (3 dense + 27 MoE), 64 experts",
+    "parallelism": "TP1/PP1/EP16/DOI4",
+    "batch": "MBS2/GBS2048/sequence-length 4096",
+    "schedule": "combined-1F1B HybridEP overlap + full-iteration CUDA Graph",
+    "precision": "MXFP8 parameters/compute, BF16 gradients",
+    "snapshot_rank": 63,
+    "snapshot_device": 3,
+    "trace_event_index": 907390,
+    "current_ledger_gib": {
+      "allocated": 121.481709,
+      "pending_free": 20.938190,
+      "active": 142.419900,
+      "inactive": 23.111350,
+      "reserved": 165.531250
+    },
+    "pending_breakdown": [
+      {"category": "HybridEP dispatch output", "blocks": 9, "block_mib": 1078, "total_mib": 9702},
+      {"category": "FC2 grouped-GEMM output", "blocks": 9, "block_mib": 1078, "total_mib": 9702},
+      {"category": "smaller cross-stream blocks", "blocks": 36, "total_mib": 2036.707}
+    ],
+    "pending_blocks_total": 54,
+    "pending_mib_total": 21440.707,
+    "large_output_blocks": 18,
+    "large_output_mib_total": 19404
+  },
+  "manual_handback_ab": {
+    "hardware": "8 x NVIDIA GB200 (2 nodes x 4 GPU)",
+    "model": "DeepSeek-V3 proxy, 16 layers (2 dense + 14 MoE), 32 experts",
+    "parallelism": "TP1/PP1/EP8",
+    "batch": "MBS1/GBS8/sequence-length 4096",
+    "schedule": "combined-1F1B HybridEP overlap + full-iteration CUDA Graph",
+    "forward_dispatch_pending_control": {"blocks": 15, "block_mib": 48},
+    "forward_dispatch_pending_handback": {"blocks": 0, "block_mib": 48},
+    "backward_dispatch_pending_mib": {"control": 720, "handback": 720},
+    "grouped_gemm_pending_mib": {"control": 1440, "handback": 1440},
+    "total_pending_mib": {"control": 3856.906, "handback": 3136.906},
+    "physical_live_mib": {"control": 24244.374, "handback": 23524.375},
+    "physical_live_reduction_mib": 720,
+    "iteration_control_ms": 78.433,
+    "iteration_handback_ms": 78.300,
+    "relative_iteration_time_percent": -0.17,
+    "paired_iteration_time_difference_ci95_ms": [-0.502, 0.235],
+    "steady_samples": 24,
+    "confidence_interval_crosses_zero": true
+  },
+  "dispatch_ring_strict_nsys": [
+    {"slots": 2, "tflops_per_gpu": 1132.38, "replay_makespan_ms": 5239.124, "steady_1f1b_ms": 4997.554},
+    {"slots": 3, "tflops_per_gpu": 1132.48, "replay_makespan_ms": 5216.506, "steady_1f1b_ms": 4989.136},
+    {"slots": 4, "tflops_per_gpu": 1132.42, "replay_makespan_ms": 5240.027, "steady_1f1b_ms": 4990.429}
+  ],
+  "dispatch_ring_pool1_2_4_same_node_nsys": {
+    "hardware": "16 x NVIDIA GB200 (4 nodes x 4 GPU)",
+    "model": "DeepSeek-V3 full-width proxy, 8 layers, 16 experts",
+    "parallelism": "TP1/PP1/EP4/DOI4",
+    "batch": "MBS1/GBS512",
+    "schedule": "combined-1F1B + full-iteration CUDA Graph",
+    "dispatch_slot_mib": 539,
+    "graph_topology_exact": true,
+    "steady_acquisition_sequence_exact": true,
+    "regression_gate_percent": 0.5,
+    "runs": [
+      {"slots": 1, "replay_makespan_ms": 5389.290, "relative_to_pool4_percent": 0.826, "steady_unit_count": 31, "steady_unit_p50_ms": 118.632, "steady_unit_cv_percent": 1.644, "model_f_dispatch_gemm_overlap_p50_percent": 10.956},
+      {"slots": 2, "replay_makespan_ms": 5349.900, "relative_to_pool4_percent": 0.089, "steady_1f1b_relative_to_pool4_percent": -0.397, "steady_unit_count": 31, "steady_unit_p50_ms": 118.583, "steady_unit_cv_percent": 1.798, "model_f_dispatch_gemm_overlap_p50_percent": 77.065},
+      {"slots": 4, "replay_makespan_ms": 5345.120, "relative_to_pool4_percent": 0.0, "steady_unit_count": 31, "steady_unit_p50_ms": 118.519, "steady_unit_cv_percent": 1.810, "model_f_dispatch_gemm_overlap_p50_percent": 79.785}
+    ],
+    "verdict": "pool1_regresses_overlap_and_replay; pool2_sufficient"
+  },
+  "cuda_graph_strict_ab": {
+    "hardware": "16 x NVIDIA GB200 (4 nodes x 4 GPU), same allocation",
+    "model": "DeepSeek-V3 full-width proxy, 8 layers, 16 experts",
+    "parallelism": "TP1/PP1/EP4/DOI4",
+    "batch": "MBS1/GBS512",
+    "schedule": "combined-1F1B + full-iteration CUDA Graph",
+    "steps": 12,
+    "eager_warmup_steps": 8,
+    "megatron_commit": "296a6c9a55775a1ed3248d24cbbb8e6cc51fbf37",
+    "transformer_engine_commit": "1d9f102a717a133c4dacb2d3c2c9c0f7a3cf54ee",
+    "rank": 0,
+    "metric_source": "training log, same rank and counter semantics",
+    "dynamic_k0": {
+      "lifetime_max_reserved_mib": 64338,
+      "replay_final_reserved_mib": 53530
+    },
+    "ring_k2": {
+      "lifetime_max_reserved_mib": 58598,
+      "replay_final_reserved_mib": 53690
+    },
+    "ring_k2_minus_dynamic_k0": {
+      "lifetime_max_reserved_mib": -5740,
+      "replay_final_reserved_mib": 160
+    }
+  },
+  "completion_long_tail": {
+    "allocation_interarrival_ms": [19, 20],
+    "free_requested_to_completed_ms": [150, 327],
+    "representative_pause_ms": 200,
+    "observed_inflight_depth": 10,
+    "root_cause": "unresolved"
+  }
+}
