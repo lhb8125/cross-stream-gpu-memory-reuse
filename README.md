@@ -23,6 +23,8 @@ unsafe control:
 │   ├── evidence.json                 # Numbers used by the article
 │   └── microbenchmark_5x_summary.csv # Published five-run summary
 ├── figures/
+│   ├── part1-en/ and part1-zh/       # Publication figures for Part 1
+│   ├── part2-en/ and part2-zh/       # Publication figures for Part 2
 │   ├── cuda_graph_phases.png          # Warmup, capture, and replay semantics
 │   ├── full_cg_lifetime_vs_replay.png # Startup high-water vs. replay steady state
 │   ├── microbenchmark_tradeoff.svg    # Rebuilt from the published CSV
