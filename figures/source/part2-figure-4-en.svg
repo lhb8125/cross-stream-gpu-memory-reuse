@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Why this schedule needs two dispatch slots</title>
+  <desc id="desc">One slot serializes F dispatch after B MLP. Two slots preserve overlap. Each slot remains occupied from its producer's write through its consumer's final read. Separate slot rows show simultaneous occupancy.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#65a500"/></marker>
+    <pattern id="wait" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="9" stroke="#d97706" stroke-width="2" opacity=".35"/></pattern>
+    <style>
+      text{font-family:Arial,sans-serif;fill:#182327}
+      .lane{font-size:13px;font-weight:700}
+      .label{font-size:14px}
+      .slot{font-size:13px;font-weight:700}
+      .data{fill:#e6f2d2;stroke:#65a500;stroke-width:1.5}
+      .compute{fill:#edf0f2;stroke:#748088;stroke-width:1.2}
+      .edge{fill:none;stroke:#65a500;stroke-width:2;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1200" height="720" fill="white"/>
+  <text x="50" y="43" font-size="27" font-weight="700">Why this schedule needs two dispatch slots</text>
+  <text x="50" y="72" font-size="15">μ = microbatch; ℓ = layer. Temporary dispatch outputs only; schematic timeline, not to scale.</text>
+  <path d="M1030 90H1140" class="edge"/><text x="970" y="95" font-size="14">Time</text>
+
+  <rect x="40" y="110" width="1120" height="220" rx="16" fill="#f5faed" stroke="#65a500" stroke-width="1.5"/>
+  <text x="60" y="139" font-size="20" font-weight="700">K=1 · F dispatch must wait for the only slot</text>
+  <text x="60" y="178" class="lane">COMM</text>
+  <text x="60" y="230" class="lane">COMPUTE</text>
+  <text x="60" y="282" class="lane">SLOT 0</text>
+  <line x1="160" y1="191" x2="1110" y2="191" stroke="#bdcfaa"/>
+  <line x1="160" y1="243" x2="1110" y2="243" stroke="#c3cbd0"/>
+  <rect x="170" y="156" width="215" height="35" rx="6" class="data"/>
+  <text x="277.5" y="178" text-anchor="middle" class="label">B combine (μ<tspan baseline-shift="sub" font-size="10">b</tspan>, ℓ<tspan baseline-shift="sub" font-size="10">b</tspan>) → slot 0</text>
+  <rect x="405" y="156" width="235" height="35" rx="6" fill="url(#wait)" stroke="#d97706"/>
+  <text x="522.5" y="178" text-anchor="middle" class="label">wait for slot 0's final read</text>
+  <rect x="660" y="156" width="215" height="35" rx="6" class="data"/>
+  <text x="767.5" y="178" text-anchor="middle" class="label">F dispatch (μ<tspan baseline-shift="sub" font-size="10">f</tspan>, ℓ<tspan baseline-shift="sub" font-size="10">f</tspan>) → slot 0</text>
+  <rect x="405" y="208" width="235" height="35" rx="6" class="compute"/>
+  <text x="522.5" y="230" text-anchor="middle" class="label">B MLP reads slot 0</text>
+  <rect x="895" y="208" width="195" height="35" rx="6" class="compute"/>
+  <text x="992.5" y="230" text-anchor="middle" class="label">F MLP reads slot 0</text>
+  <path d="M375 191L405 208" class="edge"/>
+  <path d="M640 225L660 191" class="edge"/>
+  <path d="M865 191L895 208" class="edge"/>
+  <rect x="170" y="260" width="470" height="35" rx="6" fill="#fff0d9" stroke="#d97706"/>
+  <text x="405" y="282" text-anchor="middle" class="slot">B combine output — held until B MLP finishes</text>
+  <rect x="660" y="260" width="430" height="35" rx="6" fill="#e6f2d2" stroke="#65a500"/>
+  <text x="875" y="282" text-anchor="middle" class="slot">F dispatch output — held until F MLP finishes</text>
+  <line x1="640" y1="244" x2="640" y2="297" stroke="#d97706" stroke-dasharray="4 4"/>
+  <text x="1100" y="316" text-anchor="end" font-size="14" fill="#9a4c00">B MLP / F dispatch: no overlap</text>
+
+  <rect x="40" y="350" width="1120" height="265" rx="16" fill="#f5faed" stroke="#65a500" stroke-width="1.5"/>
+  <text x="60" y="381" font-size="20" font-weight="700">K=2 · Two occupied slots coexist while B MLP overlaps F dispatch</text>
+  <text x="60" y="431" class="lane">COMM</text>
+  <text x="60" y="483" class="lane">COMPUTE</text>
+  <text x="60" y="538" class="lane">SLOT 0</text>
+  <text x="60" y="580" class="lane">SLOT 1</text>
+  <line x1="160" y1="444" x2="1110" y2="444" stroke="#bdcfaa"/>
+  <line x1="160" y1="496" x2="1110" y2="496" stroke="#c3cbd0"/>
+  <rect x="170" y="409" width="215" height="35" rx="6" class="data"/>
+  <text x="277.5" y="431" text-anchor="middle" class="label">B combine (μ<tspan baseline-shift="sub" font-size="10">b</tspan>, ℓ<tspan baseline-shift="sub" font-size="10">b</tspan>) → slot 0</text>
+  <rect x="405" y="409" width="215" height="35" rx="6" class="data"/>
+  <text x="512.5" y="431" text-anchor="middle" class="label">F dispatch (μ<tspan baseline-shift="sub" font-size="10">f</tspan>, ℓ<tspan baseline-shift="sub" font-size="10">f</tspan>) → slot 1</text>
+  <rect x="405" y="461" width="235" height="35" rx="6" class="compute"/>
+  <text x="522.5" y="483" text-anchor="middle" class="label">B MLP reads slot 0</text>
+  <rect x="660" y="461" width="215" height="35" rx="6" class="compute"/>
+  <text x="767.5" y="483" text-anchor="middle" class="label">F MLP reads slot 1</text>
+  <path d="M375 444L405 461" class="edge"/>
+  <path d="M610 444L660 461" class="edge"/>
+  <rect x="170" y="516" width="470" height="34" rx="6" fill="#fff0d9" stroke="#d97706"/>
+  <text x="405" y="538" text-anchor="middle" class="slot">B combine output — occupied through B MLP's final read</text>
+  <rect x="405" y="558" width="470" height="34" rx="6" fill="#e6f2d2" stroke="#65a500"/>
+  <text x="640" y="580" text-anchor="middle" class="slot">F dispatch output — occupied through F MLP's final read</text>
+  <line x1="640" y1="496" x2="640" y2="551" stroke="#d97706" stroke-dasharray="4 4"/>
+  <line x1="875" y1="496" x2="875" y2="593" stroke="#65a500" stroke-dasharray="4 4"/>
+  <text x="1100" y="534" text-anchor="end" font-size="14">Both slots occupied</text>
+  <text x="1100" y="556" text-anchor="end" font-size="14">during the overlap</text>
+
+  <rect x="40" y="632" width="1120" height="32" rx="6" fill="#f5faed" stroke="#b4ce8b"/>
+  <text x="600" y="653" text-anchor="middle" font-size="14">B combine executes the physical dispatch operator; its output is a dispatch output.</text>
+  <rect x="40" y="676" width="1120" height="32" rx="6" fill="#f5faed" stroke="#b4ce8b"/>
+  <text x="600" y="697" text-anchor="middle" font-size="14">Separate forward/backward pools use one slot each: total capacity remains two buffers.</text>
+</svg>

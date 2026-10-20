@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" aria-labelledby="title desc" role="img" viewBox="0 0 1200 760">
+  <title id="title">Choosing a Cross-Stream Tensor Lifetime Strategy</title>
+  <desc id="desc">First determine whether the producer knows every consumer and its final use. If not, each consumer registers its own stream with record_stream(). Otherwise audit whether hand-back's new dependency enters the critical path. Choose an event-managed preallocated slot pool only when the working-set bound is known, shapes are stable, and the writer supports caller-provided output.</desc>
+  <defs><marker id="a" markerHeight="10" markerWidth="10" orient="auto" refX="8" refY="3"><path d="M0 0L0 6L9 3z" fill="#65a500" /></marker></defs>
+  <rect fill="#ffffff" height="760" rx="28" width="1200" />
+  <g font-family="Arial,sans-serif">
+    <text fill="#182327" font-size="26" font-weight="850" x="55" y="58">The Choice Depends on Ownership, Critical Path, and the Working-Set Bound</text>
+    <text fill="#465864" font-size="15" x="55" y="90">Multiple Simultaneous Storage Instances Are Not Sufficient Reason to Choose a Preallocated Slot Pool</text>
+
+    <rect fill="#f2f8e9" height="78" rx="18" stroke="#65a500" width="380" x="410" y="120" />
+    <text fill="#182327" font-size="18" font-weight="850" text-anchor="middle" x="600" y="144">Does the producer know</text>
+    <text fill="#182327" font-size="18" font-weight="850" text-anchor="middle" x="600" y="167">every consumer and its final use?</text>
+    <text fill="#465864" font-size="13" text-anchor="middle" x="600" y="188">Including aliases and the next writer</text>
+
+    <path d="M495 198C462 230 330 242 300 278" fill="none" marker-end="url(#a)" stroke="#65a500" stroke-width="3" />
+    <path d="M705 198C741 229 866 241 900 278" fill="none" marker-end="url(#a)" stroke="#65a500" stroke-width="3" />
+    <text fill="#9a4c00" font-size="15" font-weight="800" x="410" y="237">No</text>
+    <text fill="#4d8000" font-size="15" font-weight="800" x="790" y="237">Yes</text>
+
+    <rect fill="#fff1e2" height="120" rx="20" stroke="#b45309" width="430" x="85" y="285" />
+    <text fill="#653300" font-size="22" font-weight="850" text-anchor="middle" x="300" y="326">Consumer-side record_stream()</text>
+    <text fill="#653300" font-size="14" text-anchor="middle" x="300" y="358">Each consumer registers its own stream</text>
+    <text fill="#653300" font-size="14" text-anchor="middle" x="300" y="382">The allocator does not discover these streams</text>
+
+    <rect fill="#f2f8e9" height="120" rx="20" stroke="#65a500" width="430" x="685" y="285" />
+    <text fill="#182327" font-size="18" font-weight="850" text-anchor="middle" x="900" y="323">Does hand-back's new edge</text>
+    <text fill="#182327" font-size="18" font-weight="850" text-anchor="middle" x="900" y="348">enter the critical path?</text>
+    <text fill="#465864" font-size="13" text-anchor="middle" x="900" y="378">Audit each tensor and overlap pattern</text>
+
+    <path d="M790 405C755 440 650 451 620 488" fill="none" marker-end="url(#a)" stroke="#65a500" stroke-width="3" />
+    <path d="M1115 345H1188V475H1145V488" fill="none" marker-end="url(#a)" stroke="#65a500" stroke-width="3" />
+    <text fill="#4d8000" font-size="15" font-weight="800" x="714" y="449">No</text>
+    <text fill="#425b30" font-size="14" font-weight="800" text-anchor="middle" x="1000" y="442">Yes / fixed address required</text>
+    <text fill="#425b30" font-size="14" font-weight="800" text-anchor="middle" x="1000" y="461">or a fixed memory bound</text>
+
+    <rect fill="#f2f8e9" height="110" rx="20" stroke="#65a500" width="400" x="420" y="495" />
+    <text fill="#254600" font-size="20" font-weight="850" text-anchor="middle" x="620" y="535">Schedule-aware hand-back</text>
+    <text fill="#465864" font-size="14" text-anchor="middle" x="620" y="566">Dynamic allocation still handles multiple tensors</text>
+    <text fill="#465864" font-size="13" text-anchor="middle" x="620" y="588">Hand back only off the critical path</text>
+
+    <rect fill="#edf0f2" height="110" rx="20" stroke="#748088" width="330" x="845" y="495" />
+    <text fill="#182327" font-size="16" font-weight="850" text-anchor="middle" x="1010" y="529">Bounded K, stable shapes,</text>
+    <text fill="#182327" font-size="16" font-weight="850" text-anchor="middle" x="1010" y="553">and caller-provided output?</text>
+    <text fill="#465864" font-size="13" text-anchor="middle" x="1010" y="582">All three conditions must hold</text>
+
+    <path d="M945 605C913 628 865 636 835 663" fill="none" marker-end="url(#a)" stroke="#65a500" stroke-width="3" />
+    <path d="M1080 605C1100 626 1110 640 1110 663" fill="none" marker-end="url(#a)" stroke="#65a500" stroke-width="3" />
+    <text fill="#425b30" font-size="14" font-weight="800" x="892" y="639">Yes</text>
+    <text fill="#9a4c00" font-size="14" font-weight="800" x="1118" y="639">No</text>
+
+    <rect fill="#edf0f2" height="66" rx="17" stroke="#748088" width="315" x="635" y="670" />
+    <text fill="#182327" font-size="17" font-weight="850" text-anchor="middle" x="792" y="698">Event-managed slot pool</text>
+    <text fill="#465864" font-size="13" text-anchor="middle" x="792" y="721">It is a ring only with periodic round-robin reuse</text>
+    <rect fill="#fff1e2" height="66" rx="17" stroke="#b45309" width="200" x="975" y="670" />
+    <text fill="#653300" font-size="15" font-weight="850" text-anchor="middle" x="1075" y="698">record_stream()</text>
+    <text fill="#653300" font-size="12" text-anchor="middle" x="1075" y="721">or refactor the output interface</text>
+
+    <rect fill="#f2f8e9" height="241" rx="20" stroke="#76b900" width="325" x="55" y="495" />
+    <text fill="#182327" font-size="17" font-weight="850" text-anchor="middle" x="217" y="535">Validate every path</text>
+    <text fill="#465864" font-size="14" x="90" y="574">• numerical correctness</text>
+    <text fill="#465864" font-size="14" x="90" y="604">• pending / active / reserved</text>
+    <text fill="#465864" font-size="14" x="90" y="634">• Nsys critical path</text>
+    <text fill="#465864" font-size="14" x="90" y="664">• warmup lifetime peak</text>
+    <text fill="#465864" font-size="14" x="90" y="694">• CUDA Graph replay steady</text>
+  </g>
+</svg>
